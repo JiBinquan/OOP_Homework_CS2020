@@ -37,11 +37,11 @@ struct stu {
 	int peace;
 	int experiment;
 	int eot;
-	int sum;
+	double sum;
 	int ranks;
 };
 
-int len,allsum,var,ave;
+int len, allsum, var, ave;
 stu lis[maxn];
 map<string, stu>mp;
 string tpxh, tpxm;
@@ -51,13 +51,18 @@ bool cmp(stu a, stu b)
 	return a.sum > b.sum;
 }
 
+void sortScore()
+{
+	sort(lis + 1, lis + 1 + len, cmp);
+}
+
 void readDataFromFile()
 {
 	allsum = 0;
 	ifstream in("data.txt");
 	in >> len;
 	//while (in >> tpxh >> tpxm >> c1 >> c2 >> c3) {
-	for (int i = 1,c1,c2,c3; i <= len; i++) {
+	for (int i = 1, c1, c2, c3; i <= len; i++) {
 		in >> tpxh >> tpxm >> c1 >> c2 >> c3;
 		stu tmp;
 		tmp.Snum = tpxh;
@@ -65,21 +70,17 @@ void readDataFromFile()
 		tmp.peace = c1;
 		tmp.experiment = c2;
 		tmp.eot = c3;
-		tmp.sum = c1 + c2 + c3;
+		tmp.sum = (c1 * 2.0 + c2 * 2.0 + c3 * 6.0) / 10;
 		lis[i] = tmp;
 		allsum += lis[i].sum;
 	}
 	ave = allsum / len;
+	sortScore();
 	for (int i = 1; i <= len; i++) {
 		lis[i].ranks = i;
 		mp[lis[i].Snum] = lis[i];
 		var += (lis[i].sum - ave) * (lis[i].sum - ave);
 	}
-}
-
-void sortScore()
-{
-	sort(lis + 1, lis + 1 + len, cmp);
 }
 
 void printOut()
@@ -119,12 +120,12 @@ void query()
 int main()
 {
 
-	cout<<"******************************\n";
-	cout<<"       学生成绩管理分析系统        \n";
-	cout<<"         Binquan Ji            \n";
-	cout<<"******************************\n\n";
+	cout << "******************************\n";
+	cout << "       学生成绩管理分析系统        \n";
+	cout << "         Binquan Ji            \n";
+	cout << "******************************\n\n";
 	readDataFromFile();
-	
+
 	cout << "输入\"print\"输出全部学生信息" << endl;
 	cout << "输入\"query\"以查询单个学生详细信息" << endl;
 	cout << "输入\"end\"以结束" << endl;
@@ -135,7 +136,7 @@ int main()
 		if (op == "print") {
 			printOut();
 		}
-		else if(op == "query"){
+		else if (op == "query") {
 			query();
 		}
 		else if (op == "end") {
@@ -144,6 +145,7 @@ int main()
 		else {
 			cout << "指令错误！" << endl;
 		}
+		cout << "请输入接下来要进行的操作：" << endl;
 	}
 	system("pause");
 	return 0;
