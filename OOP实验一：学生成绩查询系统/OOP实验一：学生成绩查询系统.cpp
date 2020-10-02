@@ -81,6 +81,7 @@ void readDataFromFile()
 		mp[lis[i].Snum] = lis[i];
 		var += (lis[i].sum - ave) * (lis[i].sum - ave);
 	}
+	in.close();
 }
 
 void printOut()
